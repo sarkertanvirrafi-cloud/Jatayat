@@ -7,7 +7,12 @@ declare(strict_types=1);
  * Fallback: POSTGRES_URL or PG* environment variables.
  */
 
-$databaseUrl = trim((string)(getenv('DATABASE_URL') ?: getenv('POSTGRES_URL') ?: ''));
+$databaseUrl = trim((string)(
+    getenv('DATABASE_URL')
+    ?: getenv('DATABASE_URL_UNPOOLED')
+    ?: getenv('POSTGRES_URL')
+    ?: ''
+));
 
 if ($databaseUrl !== '') {
     $parts = parse_url($databaseUrl);
@@ -31,16 +36,38 @@ if ($databaseUrl !== '') {
     ];
 }
 
-$host = trim((string)(getenv('PGHOST') ?: ''));
-$name = trim((string)(getenv('PGDATABASE') ?: ''));
-$user = trim((string)(getenv('PGUSER') ?: ''));
+$host = trim((string)(
+    getenv('PGHOST')
+    ?: getenv('DATABASE_PGHOST')
+    ?: ''
+));
+
+$name = trim((string)(
+    getenv('PGDATABASE')
+    ?: getenv('DATABASE_PGDATABASE')
+    ?: ''
+));
+
+$user = trim((string)(
+    getenv('PGUSER')
+    ?: getenv('DATABASE_PGUSER')
+    ?: ''
+));
 
 return [
     'valid' => ($host !== '' && $name !== '' && $user !== ''),
     'host' => $host,
-    'port' => (int)(getenv('PGPORT') ?: 5432),
+    'port' => (int)(
+        getenv('PGPORT')
+        ?: getenv('DATABASE_PGPORT')
+        ?: 5432
+    ),
     'database' => $name,
     'username' => $user,
-    'password' => (string)(getenv('PGPASSWORD') ?: ''),
-    'sslmode' => (string)(getenv('PGSSLMODE') ?: 'require'),
+    'password' => (string)(
+        getenv('PGPASSWORD')
+        ?: getenv('DATABASE_PGPASSWORD')
+        ?: ''
+    ),
+    'sslmode' => 'require',
 ];
