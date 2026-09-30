@@ -1,0 +1,22 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/auth/*.php": {
+      "runtime": "vercel-php@0.9.0"
+    },
+    "api/ride-request/*.php": {
+      "runtime": "vercel-php@0.9.0"
+    },
+    "api/schedule-ride/*.php": {
+      "runtime": "vercel-php@0.9.0"
+    },
+    "api/request-history/*.php": {
+      "runtime": "vercel-php@0.9.0"
+    },
+    "api/test-db.php": {
+      "runtime": "vercel-php@0.9.0"
+    }
+  },
+  "cleanUrls": false,
+  "trailingSlash": false
+}

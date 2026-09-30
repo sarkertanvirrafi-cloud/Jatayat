@@ -1,0 +1,7 @@
+database/
+README.md
+VERCEL-DEPLOY.md
+FEATURE_MAP.md
+.env.example
+.git/
+.gitignore

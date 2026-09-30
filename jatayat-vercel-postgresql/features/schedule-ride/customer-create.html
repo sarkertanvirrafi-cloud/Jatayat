@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create a Schedule Ride | Jatra</title><link rel="stylesheet" href="../../shared/css/style.css">
+</head>
+<body data-page="customer-create-schedule">
+  <header class="site-header"><div class="header-inner"><a class="back-link" href="../../features/schedule-ride/customer-menu.html" aria-label="Back">&#8592;</a><a class="brand" href="../../features/auth/index.html" aria-label="Jatra Home"><img src="../../shared/assets/images/logo.png" alt="Jatra logo"></a><div class="header-spacer"></div></div></header>
+  <main class="page-main form-page-main">
+    <section class="form-card">
+      <h1>Create a Schedule Ride</h1>
+      <form class="standard-form" id="customerScheduleForm">
+        <label class="form-field"><span>Pick Up Location</span><input id="customerSchedulePickup" type="text" required></label>
+        <label class="form-field"><span>Destination</span><input id="customerScheduleDestination" type="text" required></label>
+        <label class="form-field"><span>Date</span><input id="customerScheduleDate" type="date" required></label>
+        <label class="form-field"><span>Pick Up Time</span><input id="customerSchedulePickupTime" type="time" required></label>
+        <label class="form-field"><span>Drop Time</span><input id="customerScheduleDropTime" type="time" required></label>
+        <label class="form-field"><span>Fare</span><input id="customerScheduleFare" type="number" min="0" required></label>
+        <button class="form-submit customer-menu-color" type="submit">Create a Schedule Ride</button>
+      </form>
+    </section>
+  </main>
+  <script src="../../shared/js/app.js"></script>
+</body>
+</html>

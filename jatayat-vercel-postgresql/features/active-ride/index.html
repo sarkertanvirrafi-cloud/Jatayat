@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Active Ride | Jatra</title>
+  <link rel="stylesheet" href="../../shared/css/style.css">
+</head>
+<body data-page="ride-active">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="back-link" id="activeBackLink" href="../../features/active-ride/details.html" aria-label="Back">&#8592;</a>
+      <a class="brand" href="../../features/auth/index.html" aria-label="Jatra Home">
+        <img src="../../shared/assets/images/logo.png" alt="Jatra logo">
+      </a>
+      <div class="header-spacer"></div>
+    </div>
+  </header>
+
+  <main class="page-main active-page-main">
+    <section class="map-section" aria-label="Live ride map">
+      <div class="map-ui">
+        <div class="road road-one"></div>
+        <div class="road road-two"></div>
+        <div class="road road-three"></div>
+        <div class="map-pin pin-you"><span></span><b>You</b></div>
+        <div class="map-pin pin-other"><span></span><b id="activeMapOtherLabel">Rider</b></div>
+      </div>
+    </section>
+
+    <section class="contact-toolbar" aria-label="Ride communication">
+      <button class="contact-action" id="callAction">
+        <span class="action-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M6.7 2.5h3.1l1.6 4.2-2.1 1.6c1.2 3 3.4 5.2 6.4 6.4l1.6-2.1 4.2 1.6v3.1c0 2.2-1.8 4.2-4.2 4.2C9 21.5 2.5 15 2.5 6.7c0-2.4 2-4.2 4.2-4.2Z"/></svg>
+        </span>
+        <strong id="callActionLabel">Call Rider</strong>
+      </button>
+
+      <button class="contact-action" id="messageAction">
+        <span class="action-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 4.5h16v12H9l-5 4v-16Z"/></svg>
+        </span>
+        <strong>Message</strong>
+      </button>
+
+      <button class="contact-action" id="statusAction">
+        <span class="action-icon rider-symbol" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="4" r="2"/><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M10.5 8h3.4l2.1 3.4h-4l-1.7-2.2-2.3 3.1"/></svg>
+        </span>
+        <strong>Ride Status</strong>
+      </button>
+    </section>
+
+    <section class="active-content">
+      <article class="info-card active-person-card" id="personInfoCard">
+        <h2 id="activePersonInfoTitle">Rider Info</h2>
+        <div class="info-row"><span>Name</span><strong id="activePersonName">Afroza</strong></div>
+        <div class="info-row"><span>Department</span><strong id="activePersonDepartment">BBA</strong></div>
+        <div class="info-row"><span>Student ID</span><strong id="activePersonStudentId">0112310151</strong></div>
+        <div class="info-row"><span>Phone Number</span><strong id="activePersonPhone">01XXXXXXXXX</strong></div>
+      </article>
+
+      <section class="status-area" id="rideStatusArea">
+        <button class="status-button accepted-status" type="button">Request Accepted</button>
+        <button class="status-button ongoing-status" id="rideStageButton" type="button">Ride Ongoing</button>
+      </section>
+    </section>
+  </main>
+
+  <div class="simple-modal hidden" id="callModal" role="dialog" aria-modal="true" aria-labelledby="callModalTitle">
+    <div class="modal-box">
+      <button class="modal-close" data-close-modal aria-label="Close">&times;</button>
+      <h3 id="callModalTitle">Phone Number</h3>
+      <p class="phone-number" id="modalPhone">01XXXXXXXXX</p>
+      <div class="modal-actions">
+        <button class="simple-button blue-button" id="copyPhone">Copy Number</button>
+        <a class="simple-button green-button" id="dialPhone" href="tel:01XXXXXXXXX">Call</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-panel hidden" id="chatPanel" aria-label="Message panel">
+    <div class="chat-header">
+      <strong id="chatTitle">Rider</strong>
+      <button data-close-chat aria-label="Close">&times;</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-message received">Hello</div>
+    </div>
+    <form class="chat-form" id="chatForm">
+      <input id="chatInput" type="text" placeholder="Type message" autocomplete="off">
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <div class="toast hidden" id="toast"></div>
+  <script src="../../shared/js/app.js"></script>
+</body>
+</html>
