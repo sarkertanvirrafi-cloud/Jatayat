@@ -1,12 +1,6 @@
 <?php
 declare(strict_types=1);
 
-/**
- * PostgreSQL configuration for Vercel.
- * Primary source: DATABASE_URL (recommended for Neon/Supabase/Railway Postgres).
- * Fallback: POSTGRES_URL or PG* environment variables.
- */
-
 $databaseUrl = trim((string)(
     getenv('DATABASE_URL')
     ?: getenv('DATABASE_URL_UNPOOLED')
@@ -15,26 +9,100 @@ $databaseUrl = trim((string)(
 ));
 
 if ($databaseUrl !== '') {
+
     $parts = parse_url($databaseUrl);
-    if ($parts === false || empty($parts['host']) || empty($parts['path'])) {
-        return ['valid' => false];
+
+    if (
+        $parts === false ||
+        empty($parts['host']) ||
+        empty($parts['path'])
+    ) {
+        return [
+            'valid' => false
+        ];
     }
 
     $query = [];
+
     if (!empty($parts['query'])) {
-        parse_str($parts['query'], $query);
+        parse_str(
+            $parts['query'],
+            $query
+        );
     }
+
+    $host = (string)$parts['host'];
+
+    /*
+     * Neon endpoint ID
+     *
+     * Example host:
+     * ep-example-123456.us-east-2.aws.neon.tech
+     *
+     * Endpoint:
+     * ep-example-123456
+     */
+
+    $endpointId = explode(
+        '.',
+        $host
+    )[0];
+
+    /*
+     * Pooled hostname example:
+     * ep-example-123456-pooler
+     *
+     * Endpoint must be:
+     * ep-example-123456
+     */
+    $endpointId = preg_replace(
+        '/-pooler$/',
+        '',
+        $endpointId
+    );
 
     return [
         'valid' => true,
-        'host' => (string)$parts['host'],
-        'port' => (int)($parts['port'] ?? 5432),
-        'database' => ltrim((string)$parts['path'], '/'),
-        'username' => rawurldecode((string)($parts['user'] ?? '')),
-        'password' => rawurldecode((string)($parts['pass'] ?? '')),
-        'sslmode' => (string)($query['sslmode'] ?? 'require'),
+
+        'host' => $host,
+
+        'port' => (int)(
+            $parts['port']
+            ?? 5432
+        ),
+
+        'database' => ltrim(
+            (string)$parts['path'],
+            '/'
+        ),
+
+        'username' => rawurldecode(
+            (string)(
+                $parts['user']
+                ?? ''
+            )
+        ),
+
+        'password' => rawurldecode(
+            (string)(
+                $parts['pass']
+                ?? ''
+            )
+        ),
+
+        'sslmode' => (string)(
+            $query['sslmode']
+            ?? 'require'
+        ),
+
+        'endpoint_id' => $endpointId
     ];
 }
+
+
+/* =====================================
+   ENVIRONMENT VARIABLE FALLBACK
+   ===================================== */
 
 $host = trim((string)(
     getenv('PGHOST')
@@ -54,20 +122,54 @@ $user = trim((string)(
     ?: ''
 ));
 
+$password = (string)(
+    getenv('PGPASSWORD')
+    ?: getenv('DATABASE_PGPASSWORD')
+    ?: ''
+);
+
+$port = (int)(
+    getenv('PGPORT')
+    ?: getenv('DATABASE_PGPORT')
+    ?: 5432
+);
+
+$endpointId = '';
+
+if ($host !== '') {
+
+    $endpointId = explode(
+        '.',
+        $host
+    )[0];
+
+    $endpointId = preg_replace(
+        '/-pooler$/',
+        '',
+        $endpointId
+    );
+}
+
 return [
-    'valid' => ($host !== '' && $name !== '' && $user !== ''),
+    'valid' => (
+        $host !== ''
+        &&
+        $name !== ''
+        &&
+        $user !== ''
+    ),
+
     'host' => $host,
-    'port' => (int)(
-        getenv('PGPORT')
-        ?: getenv('DATABASE_PGPORT')
-        ?: 5432
-    ),
+
+    'port' => $port,
+
     'database' => $name,
+
     'username' => $user,
-    'password' => (string)(
-        getenv('PGPASSWORD')
-        ?: getenv('DATABASE_PGPASSWORD')
-        ?: ''
-    ),
+
+    'password' => $password,
+
     'sslmode' => 'require',
+
+    'endpoint_id' => $endpointId
 ];

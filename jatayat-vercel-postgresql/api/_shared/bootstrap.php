@@ -92,13 +92,27 @@ function db(): PDO
         ?? 'require'
     );
 
+    $endpointId = (string)(
+        $config['endpoint_id']
+        ?? ''
+    );
+
     try {
 
         $dsn =
-            "pgsql:host={$host};" .
+            "pgsql:" .
+            "host={$host};" .
             "port={$port};" .
             "dbname={$name};" .
             "sslmode={$sslmode}";
+
+        /*
+         * Neon workaround for older libpq clients
+         * that do not support the required SNI behavior.
+         */
+        if ($endpointId !== '') {
+            $dsn .= ";options=endpoint={$endpointId}";
+        }
 
         $pdo = new PDO(
             $dsn,
@@ -120,11 +134,6 @@ function db(): PDO
 
     } catch (Throwable $e) {
 
-        /*
-         * IMPORTANT:
-         * Error is written only to Vercel Logs.
-         * It is NOT shown to the visitor.
-         */
         error_log(
             'PostgreSQL connection error: '
             . $e->getMessage()
